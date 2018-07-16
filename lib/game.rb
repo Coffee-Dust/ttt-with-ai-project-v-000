@@ -89,7 +89,7 @@ def start_with_player_amount(amount)
   def turn
     @board.display
     puts "Please enter 1-9:"
-    move = current_player.move(self)
+    move = current_player.move(@board)
     if @board.valid_move?(move)
       @board.update(move, current_player)
     else
