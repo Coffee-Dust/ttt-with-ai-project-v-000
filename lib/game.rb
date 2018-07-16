@@ -26,6 +26,57 @@ class Game
     self.game_mode
   end
 
+  def game_mode
+    puts "Please input the gamemode you want by number: (1-3)"
+    input = gets.strip
+    case input
+    when "1"
+      self.start_with_player_amount(0)
+    when "2"
+      self.start_with_player_amount(1)
+    when "3"
+      self.start_with_player_amount(2)
+    when "wargames"
+      self.start_with_player_amount("wargames")
+    end
+  end
+
+def start_with_player_amount(amount)
+  case amount
+    when 0
+      @player_1 = Players::Computer.new("X")
+      @player_2 = Players::Computer.new("O")
+    when 1
+      @player_1 = Players::Human.new("X")
+      @player_2 = Players::Computer.new("O")
+    when 2
+      @player_1 = Players::Human.new("X")
+      @player_2 = Players::Human.new("O")
+    when "wargames"
+      times_tied = 0
+      100.times do
+        @player_1 = Players::Computer.new("X")
+        @player_2 = Players::Computer.new("O")
+        self.board.reset!
+        self.play
+        if self.draw?
+          times_tied += 1
+        end
+      end
+      puts "
+  ██╗    ██╗██╗███╗   ██╗███╗   ██╗███████╗██████╗    ███╗   ██╗ ██████╗ ███╗   ██╗███████╗
+  ██║    ██║██║████╗  ██║████╗  ██║██╔════╝██╔══██╗██╗████╗  ██║██╔═══██╗████╗  ██║██╔════╝
+  ██║ █╗ ██║██║██╔██╗ ██║██╔██╗ ██║█████╗  ██████╔╝╚═╝██╔██╗ ██║██║   ██║██╔██╗ ██║█████╗
+  ██║███╗██║██║██║╚██╗██║██║╚██╗██║██╔══╝  ██╔══██╗██╗██║╚██╗██║██║   ██║██║╚██╗██║██╔══╝
+  ╚███╔███╔╝██║██║ ╚████║██║ ╚████║███████╗██║  ██║╚═╝██║ ╚████║╚██████╔╝██║ ╚████║███████╗
+  ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝   ╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+      "
+      puts "I just played 100 games and won #{times_tied - 100}. A strange game.\nThe only winning move is not to play."
+      return
+    end
+    self.play
+  end
+
   def play
     while !self.over?
       turn
